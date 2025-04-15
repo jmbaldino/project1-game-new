@@ -91,11 +91,18 @@ class Player {
 class Obstacles {
     constructor() {
         this.board = document.getElementById("board");
-        this.obstacleWidth = 50;
-        this.obstacleHeight = 50;
-        this.spawnInterval = 1000;
+        this.spawnInterval = 1500;
         this.intervalId = null;
-        this.obstaclesArray = []; 
+        this.obstaclesArray = [];
+        this.fallSpeed = 0.7 
+
+        this.obstacleImages = [
+            "images/obstacle-1.png",
+            "images/obstacle-2.png",
+            "images/obstacle-3.png",
+            "images/obstacle-4.png",
+            "images/obstacle-5.png"
+        ]
     }
 
     startSpawning() {
@@ -105,32 +112,32 @@ class Obstacles {
     }
 
     spawnObstacle() {
-        const obstacle = document.createElement("div");
+        const obstacle = document.createElement("img");
         obstacle.classList.add("obstacle");
-
+    
+        const randomIndex = Math.floor(Math.random() * this.obstacleImages.length);
+        obstacle.src = this.obstacleImages[randomIndex];
+    
         obstacle.style.position = "absolute";
-        obstacle.style.width = `${this.obstacleWidth}px`;
-        obstacle.style.height = `${this.obstacleHeight}px`;
-        obstacle.style.backgroundColor = "red";
-
-        const maxX = this.board.clientWidth - this.obstacleWidth;
+    
+        const maxX = this.board.clientWidth - 50;
         const x = Math.floor(Math.random() * maxX);
-
+    
         obstacle.style.left = `${x}px`;
         obstacle.style.top = `0px`; 
-
+    
         this.board.appendChild(obstacle);
-
+    
         this.obstaclesArray.push(obstacle);
     }
 
     moveObstacles() {
         this.obstaclesArray.forEach(obstacle => {
-            const currentTop = parseInt(obstacle.style.top);
-            const newTop = currentTop + 1;
-
+            const currentTop = parseFloat(obstacle.style.top); // agora lê decimais corretamente
+            const newTop = currentTop + this.fallSpeed; // pode ser 0.3, 0.5, etc.
+    
             obstacle.style.top = `${newTop}px`;
-
+    
             if (newTop > this.board.clientHeight) {
                 obstacle.remove();
                 this.obstaclesArray = this.obstaclesArray.filter(obs => obs !== obstacle);
