@@ -7,6 +7,7 @@ class Player {
         this.speed = 3;
         this.direction = null;
         this.rotation = 0;
+        this.gameOver = false;
 
         this.spaceship.style.position = "absolute";
         this.spaceship.style.left = `${this.x}px`;
@@ -19,6 +20,8 @@ class Player {
 
     initControls() {
         window.addEventListener("keydown", (event) => {
+            if (this.gameOver) return;
+
             switch (event.key) {
                 case "ArrowLeft":
                     this.direction = "left";
@@ -43,8 +46,7 @@ class Player {
     }
 
     move() {
-        const boardRect = this.board.getBoundingClientRect();
-        const shipRect = this.spaceship.getBoundingClientRect();
+        if (this.gameOver) return;
 
         const maxX = this.board.clientWidth - this.spaceship.offsetWidth;
         const maxY = this.board.clientHeight - this.spaceship.offsetHeight;
@@ -52,16 +54,20 @@ class Player {
         if (this.direction) {
             switch (this.direction) {
                 case "left":
-                    if (this.x > 0) this.x -= this.speed;
+                    if (this.x <= 0) return this.triggerGameOver();
+                    this.x -= this.speed;
                     break;
                 case "right":
-                    if (this.x < maxX) this.x += this.speed;
+                    if (this.x >= maxX) return this.triggerGameOver();
+                    this.x += this.speed;
                     break;
                 case "up":
-                    if (this.y > 0) this.y -= this.speed;
+                    if (this.y <= 0) return this.triggerGameOver();
+                    this.y -= this.speed;
                     break;
                 case "down":
-                    if (this.y < maxY) this.y += this.speed;
+                    if (this.y >= maxY) return this.triggerGameOver();
+                    this.y += this.speed;
                     break;
             }
 
@@ -71,11 +77,57 @@ class Player {
 
         requestAnimationFrame(() => this.move());
     }
+
+    triggerGameOver() {
+        this.gameOver = true;
+        alert("Game Over!");
+    }
 }
 
 window.onload = () => {
     const player = new Player();
 };
 
+
+class Obstacles {
+    constructor() {
+        this.board = document.getElementById("board");
+        this.obstacleWidth = 50;
+        this.obstacleHeight = 50;
+        this.spawnInterval = 1000; 
+
+        this.startSpawning();
+    }
+
+    startSpawning() {
+        setInterval(() => this.spawnObstacle(), this.spawnInterval);
+    }
+
+    spawnObstacle() {
+        const obstacle = document.createElement("div");
+        obstacle.classList.add("obstacle");
+
+        obstacle.style.position = "absolute";
+        obstacle.style.width = `${this.obstacleWidth}px`;
+        obstacle.style.height = `${this.obstacleHeight}px`;
+        obstacle.style.backgroundColor = "red";
+
+        const maxX = this.board.clientWidth - this.obstacleWidth;
+        const maxY = this.board.clientHeight - this.obstacleHeight;
+
+        const x = Math.floor(Math.random() * maxX);
+        const y = Math.floor(Math.random() * maxY);
+
+        obstacle.style.left = `${x}px`;
+        obstacle.style.top = `${y}px`;
+
+        this.board.appendChild(obstacle);
+    }
+}
+
+window.onload = () => {
+    const player = new Player();
+    const obstacles = new Obstacles();
+};
 
 

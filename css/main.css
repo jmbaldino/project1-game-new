@@ -9,7 +9,6 @@ body {
 
 #board {
     background-color: rgb(19, 0, 102);
-    border: 5px solid rgb(255, 255, 255);
     width: 700px;
     height: 500px;
     padding: 0;
@@ -19,4 +18,9 @@ body {
 
 #spaceship {
     width: 50px
+}
+
+.obstacle {
+    border: 2px solid white;
+    border-radius: 4px;
 }
