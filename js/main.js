@@ -4,7 +4,7 @@ class Player {
         this.board = document.getElementById("board");
         this.x = 0;
         this.y = 0;
-        this.speed = 3;
+        this.speed = 2;
         this.direction = null;
         this.rotation = 0;
         this.gameOver = false;
@@ -26,7 +26,8 @@ class Player {
 
             if (!this.movementStarted) {
                 this.movementStarted = true;
-                this.obstacles.startSpawning();
+                this.obstacles.startSpawning(); 
+                this.obstacles.gameLoop();
             }
 
             switch (event.key) {
@@ -59,28 +60,24 @@ class Player {
         const maxY = this.board.clientHeight - this.spaceship.offsetHeight;
 
         if (this.direction) {
-            switch (this.direction) {
-                case "left":
-                    if (this.x <= 0) return this.triggerGameOver();
-                    this.x -= this.speed;
-                    break;
-                case "right":
-                    if (this.x >= maxX) return this.triggerGameOver();
-                    this.x += this.speed;
-                    break;
-                case "up":
-                    if (this.y <= 0) return this.triggerGameOver();
-                    this.y -= this.speed;
-                    break;
-                case "down":
-                    if (this.y >= maxY) return this.triggerGameOver();
-                    this.y += this.speed;
-                    break;
+            if (this.direction === "left") {
+                if (this.x <= 0) return this.triggerGameOver();
+                this.x -= this.speed;
+            } else if (this.direction === "right") {
+                if (this.x >= maxX) return this.triggerGameOver();
+                this.x += this.speed;
+            } else if (this.direction === "up") {
+                if (this.y <= 0) return this.triggerGameOver();
+                this.y -= this.speed;
+            } else if (this.direction === "down") {
+                if (this.y >= maxY) return this.triggerGameOver();
+                this.y += this.speed;
             }
-
+        
             this.spaceship.style.left = `${this.x}px`;
             this.spaceship.style.top = `${this.y}px`;
         }
+        
 
         requestAnimationFrame(() => this.move());
     }
@@ -91,11 +88,6 @@ class Player {
     }
 }
 
-window.onload = () => {
-    const player = new Player();
-};
-
-
 class Obstacles {
     constructor() {
         this.board = document.getElementById("board");
@@ -103,10 +95,11 @@ class Obstacles {
         this.obstacleHeight = 50;
         this.spawnInterval = 1000;
         this.intervalId = null;
+        this.obstaclesArray = []; 
     }
 
     startSpawning() {
-        if (this.intervalId) return; // já está a correr
+        if (this.intervalId) return;
 
         this.intervalId = setInterval(() => this.spawnObstacle(), this.spawnInterval);
     }
@@ -121,15 +114,33 @@ class Obstacles {
         obstacle.style.backgroundColor = "red";
 
         const maxX = this.board.clientWidth - this.obstacleWidth;
-        const maxY = this.board.clientHeight - this.obstacleHeight;
-
         const x = Math.floor(Math.random() * maxX);
-        const y = Math.floor(Math.random() * maxY);
 
         obstacle.style.left = `${x}px`;
-        obstacle.style.top = `${y}px`;
+        obstacle.style.top = `0px`; 
 
         this.board.appendChild(obstacle);
+
+        this.obstaclesArray.push(obstacle);
+    }
+
+    moveObstacles() {
+        this.obstaclesArray.forEach(obstacle => {
+            const currentTop = parseInt(obstacle.style.top);
+            const newTop = currentTop + 1;
+
+            obstacle.style.top = `${newTop}px`;
+
+            if (newTop > this.board.clientHeight) {
+                obstacle.remove();
+                this.obstaclesArray = this.obstaclesArray.filter(obs => obs !== obstacle);
+            }
+        });
+    }
+
+    gameLoop() {
+        this.moveObstacles(); 
+        requestAnimationFrame(() => this.gameLoop()); 
     }
 }
 
@@ -137,5 +148,11 @@ window.onload = () => {
     const obstacles = new Obstacles();
     const player = new Player(obstacles);
 };
+
+
+
+
+
+
 
 
