@@ -1,5 +1,5 @@
 class Player {
-    constructor() {
+    constructor(obstacles) {
         this.spaceship = document.getElementById("spaceship");
         this.board = document.getElementById("board");
         this.x = 0;
@@ -8,6 +8,8 @@ class Player {
         this.direction = null;
         this.rotation = 0;
         this.gameOver = false;
+        this.obstacles = obstacles;
+        this.movementStarted = false;
 
         this.spaceship.style.position = "absolute";
         this.spaceship.style.left = `${this.x}px`;
@@ -21,6 +23,11 @@ class Player {
     initControls() {
         window.addEventListener("keydown", (event) => {
             if (this.gameOver) return;
+
+            if (!this.movementStarted) {
+                this.movementStarted = true;
+                this.obstacles.startSpawning();
+            }
 
             switch (event.key) {
                 case "ArrowLeft":
@@ -94,13 +101,14 @@ class Obstacles {
         this.board = document.getElementById("board");
         this.obstacleWidth = 50;
         this.obstacleHeight = 50;
-        this.spawnInterval = 1000; 
-
-        this.startSpawning();
+        this.spawnInterval = 1000;
+        this.intervalId = null;
     }
 
     startSpawning() {
-        setInterval(() => this.spawnObstacle(), this.spawnInterval);
+        if (this.intervalId) return; // já está a correr
+
+        this.intervalId = setInterval(() => this.spawnObstacle(), this.spawnInterval);
     }
 
     spawnObstacle() {
@@ -126,8 +134,8 @@ class Obstacles {
 }
 
 window.onload = () => {
-    const player = new Player();
     const obstacles = new Obstacles();
+    const player = new Player(obstacles);
 };
 
 
