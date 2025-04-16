@@ -133,8 +133,8 @@ class Obstacles {
 
     moveObstacles() {
         this.obstaclesArray.forEach(obstacle => {
-            const currentTop = parseFloat(obstacle.style.top); // agora lê decimais corretamente
-            const newTop = currentTop + this.fallSpeed; // pode ser 0.3, 0.5, etc.
+            const currentTop = parseFloat(obstacle.style.top);
+            const newTop = currentTop + this.fallSpeed;
     
             obstacle.style.top = `${newTop}px`;
     
@@ -145,15 +145,40 @@ class Obstacles {
         });
     }
 
+    checkCollision(player) {
+        const playerRect = player.spaceship.getBoundingClientRect();
+    
+        for (const obstacle of this.obstaclesArray) {
+            const obstacleRect = obstacle.getBoundingClientRect();
+    
+            const isColliding = !(
+                playerRect.top > obstacleRect.bottom ||
+                playerRect.bottom < obstacleRect.top ||
+                playerRect.left > obstacleRect.right ||
+                playerRect.right < obstacleRect.left
+            );
+    
+            if (isColliding) {
+                player.triggerGameOver();
+                break;
+            }
+        }
+    }
+
     gameLoop() {
-        this.moveObstacles(); 
-        requestAnimationFrame(() => this.gameLoop()); 
+        this.moveObstacles();
+    
+        if (!this.player.gameOver) {
+            this.checkCollision(this.player);
+            requestAnimationFrame(() => this.gameLoop());
+        }
     }
 }
 
 window.onload = () => {
     const obstacles = new Obstacles();
     const player = new Player(obstacles);
+    obstacles.player = player;
 };
 
 
