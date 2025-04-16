@@ -119,13 +119,13 @@ class Player {
                 bullet.remove();
                 return;
             }
-    
+        
             const currentX = parseFloat(bullet.style.left);
             const currentY = parseFloat(bullet.style.top);
-    
+        
             const newX = currentX + vx;
             const newY = currentY + vy;
-    
+        
             if (
                 newX < 0 || newX > this.board.clientWidth ||
                 newY < 0 || newY > this.board.clientHeight
@@ -133,11 +133,14 @@ class Player {
                 bullet.remove();
                 return;
             }
-    
+        
             bullet.style.left = `${newX}px`;
             bullet.style.top = `${newY}px`;
-    
-            requestAnimationFrame(moveBullet);
+        
+            const hit = this.obstacles.checkBulletCollision(bullet);
+            if (!hit) {
+                requestAnimationFrame(moveBullet);
+            }
         };
     
         moveBullet();
@@ -242,6 +245,32 @@ class Obstacles {
         }
     }
     
+    checkBulletCollision(bullet) {
+        const bulletRect = bullet.getBoundingClientRect();
+    
+        for (const obstacle of this.obstaclesArray) {
+            const obstacleRect = obstacle.getBoundingClientRect();
+    
+            const isColliding = !(
+                bulletRect.top > obstacleRect.bottom ||
+                bulletRect.bottom < obstacleRect.top ||
+                bulletRect.left > obstacleRect.right ||
+                bulletRect.right < obstacleRect.left
+            );
+    
+            if (isColliding) {
+                obstacle.remove();
+                bullet.remove();
+    
+                // Remove o obstáculo do array
+                this.obstaclesArray = this.obstaclesArray.filter(o => o !== obstacle);
+    
+                return true;
+            }
+        }
+    
+        return false;
+    }
 
     gameLoop() {
         this.moveObstacles();
