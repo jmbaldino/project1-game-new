@@ -172,9 +172,11 @@ class Obstacles {
 
     startSpawning() {
         if (this.intervalId) return;
-
+    
         this.intervalId = setInterval(() => this.spawnObstacle(), this.spawnInterval);
+        this.increaseDifficulty();
     }
+    
 
     spawnObstacle() {
         const obstacle = document.createElement("img");
@@ -209,6 +211,26 @@ class Obstacles {
             }
         });
     }
+
+    increaseDifficulty() {
+        setInterval(() => {
+            this.fallSpeed += 0.1;
+            if (this.fallSpeed > 5) {
+                this.fallSpeed = 5;
+            }
+    
+            this.spawnInterval -= 100;
+            if (this.spawnInterval < 300) {
+                this.spawnInterval = 300; 
+            }
+    
+            clearInterval(this.intervalId);
+            this.intervalId = setInterval(() => this.spawnObstacle(), this.spawnInterval);
+    
+        }, 5000);
+    }
+    
+    
 
     checkCollision(player) {
         const playerRect = player.spaceship.getBoundingClientRect();
@@ -262,7 +284,6 @@ class Obstacles {
                 obstacle.remove();
                 bullet.remove();
     
-                // Remove o obstáculo do array
                 this.obstaclesArray = this.obstaclesArray.filter(o => o !== obstacle);
     
                 return true;
