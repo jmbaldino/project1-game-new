@@ -1,22 +1,22 @@
 body {
-    background-color: rgb(18, 3, 48);
+    background-color: black;
     display: flex;
+    flex-direction:column;
     justify-content: center;  
-    align-items: center;      
+    align-items: flex-end;      
     height: 100vh;            
     margin: 0;
 }
 
 #board {
     background-color: rgb(19, 0, 102);
-    width: 700px;
+    width: 800px;
     height: 500px;
     padding: 0;
-    margin: 0;
+    margin-right: 100px;
     position: relative;
 }
 
 #spaceship {
     width: 30px
 }
-
