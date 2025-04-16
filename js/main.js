@@ -151,11 +151,26 @@ class Obstacles {
         for (const obstacle of this.obstaclesArray) {
             const obstacleRect = obstacle.getBoundingClientRect();
     
+            const padding = 3;
+            const playerBox = {
+                top: playerRect.top + padding,
+                bottom: playerRect.bottom - padding,
+                left: playerRect.left + padding,
+                right: playerRect.right - padding
+            };
+    
+            const obstacleBox = {
+                top: obstacleRect.top + padding,
+                bottom: obstacleRect.bottom - padding,
+                left: obstacleRect.left + padding,
+                right: obstacleRect.right - padding
+            };
+    
             const isColliding = !(
-                playerRect.top > obstacleRect.bottom ||
-                playerRect.bottom < obstacleRect.top ||
-                playerRect.left > obstacleRect.right ||
-                playerRect.right < obstacleRect.left
+                playerBox.top > obstacleBox.bottom ||
+                playerBox.bottom < obstacleBox.top ||
+                playerBox.left > obstacleBox.right ||
+                playerBox.right < obstacleBox.left
             );
     
             if (isColliding) {
@@ -164,6 +179,7 @@ class Obstacles {
             }
         }
     }
+    
 
     gameLoop() {
         this.moveObstacles();
