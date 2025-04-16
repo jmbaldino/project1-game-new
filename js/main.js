@@ -4,7 +4,7 @@ class Player {
         this.board = document.getElementById("board");
         this.x = 0;
         this.y = 0;
-        this.speed = 2;
+        this.speed = 1;
         this.direction = null;
         this.rotation = 0;
         this.gameOver = false;
@@ -23,35 +23,33 @@ class Player {
     initControls() {
         window.addEventListener("keydown", (event) => {
             if (this.gameOver) return;
-
+    
             if (!this.movementStarted) {
                 this.movementStarted = true;
                 this.obstacles.startSpawning(); 
                 this.obstacles.gameLoop();
             }
-
-            switch (event.key) {
-                case "ArrowLeft":
-                    this.direction = "left";
-                    this.rotation = -90;
-                    break;
-                case "ArrowRight":
-                    this.direction = "right";
-                    this.rotation = 90;
-                    break;
-                case "ArrowUp":
-                    this.direction = "up";
-                    this.rotation = 0;
-                    break;
-                case "ArrowDown":
-                    this.direction = "down";
-                    this.rotation = 180;
-                    break;
+    
+            if (event.key === "ArrowLeft") {
+                this.direction = "left";
+                this.rotation = -90;
+            } else if (event.key === "ArrowRight") {
+                this.direction = "right";
+                this.rotation = 90;
+            } else if (event.key === "ArrowUp") {
+                this.direction = "up";
+                this.rotation = 0;
+            } else if (event.key === "ArrowDown") {
+                this.direction = "down";
+                this.rotation = 180;
+            } else if (event.key === " ") {
+                this.shoot();
             }
-
+    
             this.spaceship.style.transform = `rotate(${this.rotation}deg)`;
         });
     }
+    
 
     move() {
         if (this.gameOver) return;
@@ -81,6 +79,70 @@ class Player {
 
         requestAnimationFrame(() => this.move());
     }
+
+    shoot() {
+        const bullet = document.createElement("div");
+        bullet.classList.add("bullet");
+    
+        const bulletSize = 8;
+        const centerX = this.x + this.spaceship.offsetWidth / 2 - bulletSize / 2;
+        const centerY = this.y + this.spaceship.offsetHeight / 2 - bulletSize / 2;
+    
+        bullet.style.position = "absolute";
+        bullet.style.width = `${bulletSize}px`;
+        bullet.style.height = `${bulletSize}px`;
+        bullet.style.backgroundColor = "white";
+        bullet.style.borderRadius = "50%";
+        bullet.style.left = `${centerX}px`;
+        bullet.style.top = `${centerY}px`;
+    
+        this.board.appendChild(bullet);
+    
+        const speed = 3;
+        let vx = 0;
+        let vy = 0;
+    
+        if (this.direction === "left") {
+            vx = -speed;
+        } else if (this.direction === "right") {
+            vx = speed;
+        } else if (this.direction === "up") {
+            vy = -speed;
+        } else if (this.direction === "down") {
+            vy = speed;
+        } else {
+            vy = -speed; 
+        }
+    
+        const moveBullet = () => {
+            if (this.gameOver) {
+                bullet.remove();
+                return;
+            }
+    
+            const currentX = parseFloat(bullet.style.left);
+            const currentY = parseFloat(bullet.style.top);
+    
+            const newX = currentX + vx;
+            const newY = currentY + vy;
+    
+            if (
+                newX < 0 || newX > this.board.clientWidth ||
+                newY < 0 || newY > this.board.clientHeight
+            ) {
+                bullet.remove();
+                return;
+            }
+    
+            bullet.style.left = `${newX}px`;
+            bullet.style.top = `${newY}px`;
+    
+            requestAnimationFrame(moveBullet);
+        };
+    
+        moveBullet();
+    }
+    
 
     triggerGameOver() {
         this.gameOver = true;
