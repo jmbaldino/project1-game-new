@@ -149,6 +149,7 @@ class Player {
 
     triggerGameOver() {
         this.gameOver = true;
+        this.obstacles.stopSpawning();
         alert("Game Over!");
     }
 }
@@ -179,6 +180,10 @@ class Obstacles {
     
 
     spawnObstacle() {
+        if (this.player && this.player.gameOver) {
+            return;
+        }
+        
         const obstacle = document.createElement("img");
         obstacle.classList.add("obstacle");
     
@@ -291,6 +296,13 @@ class Obstacles {
         }
     
         return false;
+    }
+
+    stopSpawning() {
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+        }
     }
 
     gameLoop() {
