@@ -97,13 +97,12 @@ class Obstacles {
         this.fallSpeed = 0.7 
 
         this.obstacleImages = [
-            "/project1-game-new/images/obstacle-1.png",
-            "/project1-game-new/images/obstacle-2.png",
-            "/project1-game-new/images/obstacle-3.png",
-            "/project1-game-new/images/obstacle-4.png",
-            "/project1-game-new/images/obstacle-5.png"
-        ];
-        
+            "../images/obstacle-1.png",
+            "../images/obstacle-2.png",
+            "../images/obstacle-3.png",
+            "../images/obstacle-4.png",
+            "../images/obstacle-5.png"
+        ]
     }
 
     startSpawning() {
