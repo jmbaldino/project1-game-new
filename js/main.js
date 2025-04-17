@@ -153,7 +153,7 @@ class Player {
     triggerGameOver() {
         this.gameOver = true;
         this.obstacles.stopSpawning();
-        alert("Game Over!");
+        location.href = "gameover.html";
     }
 }
 
