@@ -19,8 +19,9 @@ body {
 #title {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
 #game {
@@ -47,18 +48,21 @@ body {
 }
 
 #controls {
-    margin-bottom: 50px;
+    margin-top: 20px;
+    width: 200px;
 }
 
-h2 {
-    color: white;
+span {
+    color: rgb(255, 255, 255); 
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: 40px;
-    margin-bottom: 10px;
+    padding: 10px;
+    font-weight: bold;
+    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff;
 }
 
-h3 {
-    color: white;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-size: 30px;
+#logo {
+    width: 80px;
+    margin-bottom: 20px;
 }
+

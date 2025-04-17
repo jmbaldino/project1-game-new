@@ -9,13 +9,6 @@ body {
     gap: 30px; 
 }
 
-h1 {
-    color: white;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-size: 100px;
-    margin: 0;
-}
-
 button {
     font-size: 20px;
     padding: 14px 28px;
@@ -24,4 +17,9 @@ button {
     border: none;
     border-radius: 8px;
     cursor: pointer;
+}
+
+#logo {
+    width: 100px;
+    filter: grayscale(100%)
 }
