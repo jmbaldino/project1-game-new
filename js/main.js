@@ -4,7 +4,7 @@ class Player {
         this.board = document.getElementById("board");
         this.x = 0;
         this.y = 0;
-        this.speed = 2;
+        this.speed = 1;
         this.direction = null;
         this.rotation = 0;
         this.gameOver = false;

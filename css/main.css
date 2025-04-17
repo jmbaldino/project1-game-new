@@ -11,10 +11,11 @@ body {
 #board {
     background-color: rgb(19, 0, 102);
     width: 800px;
-    height: 450px;
+    height: 500px;
     padding: 0;
     margin-right: 100px;
     position: relative;
+    overflow: hidden;
 }
 
 #spaceship {
