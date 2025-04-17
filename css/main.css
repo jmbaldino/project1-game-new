@@ -1,5 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
 body {
     background: radial-gradient(circle, #222222, #2806e7);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#title {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#game {
     display: flex;
     flex-direction:column;
     justify-content: center;  
@@ -20,4 +44,21 @@ body {
 
 #spaceship {
     width: 30px
+}
+
+#controls {
+    margin-bottom: 50px;
+}
+
+h2 {
+    color: white;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    color: white;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 30px;
 }
