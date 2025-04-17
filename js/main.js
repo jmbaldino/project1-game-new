@@ -2,20 +2,23 @@ class Player {
     constructor(obstacles) {
         this.spaceship = document.getElementById("spaceship");
         this.board = document.getElementById("board");
-        this.x = 0;
-        this.y = 0;
+        
         this.speed = 1;
         this.direction = null;
         this.rotation = 0;
         this.gameOver = false;
         this.obstacles = obstacles;
         this.movementStarted = false;
-
+    
         this.spaceship.style.position = "absolute";
+    
+        this.x = (this.board.offsetWidth - this.spaceship.offsetWidth) / 2;
+        this.y = (this.board.offsetHeight - this.spaceship.offsetHeight) / 2;
+    
         this.spaceship.style.left = `${this.x}px`;
         this.spaceship.style.top = `${this.y}px`;
         this.spaceship.style.transform = `rotate(${this.rotation}deg)`;
-
+    
         this.initControls();
         this.move();
     }
