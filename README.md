@@ -1,4 +1,4 @@
-# PROJECT 1 - GAME - JOSÉ MANUEL BALDINO
+# PROJECT 1 - APOLLO - JOSÉ MANUEL BALDINO
 
 ## Description
 
@@ -12,5 +12,3 @@ To shoot use spacebar
 ## Demo
 
 [https://jmbaldino.github.io/project1-game-new/]
-
-## Enjoy :)
