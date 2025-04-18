@@ -3,7 +3,7 @@ class Player {
         this.spaceship = document.getElementById("spaceship");
         this.board = document.getElementById("board");
         
-        this.speed = 1;
+        this.speed = 3;
         this.direction = null;
         this.rotation = 0;
         this.gameOver = false;
@@ -101,7 +101,7 @@ class Player {
     
         this.board.appendChild(bullet);
     
-        const speed = 3;
+        const speed = 5;
         let vx = 0;
         let vy = 0;
     
